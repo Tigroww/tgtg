@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande à récupérer</title>
+    <style>
+        * {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .store {
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .store h2 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .store p {
+            font-size: 14px;
+            color: gray;
+        }
+
+        .order {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .order h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .code {
+            background-color: #004d40;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background-color: #004d40;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .slider-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            transition: left 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Votre commande</div>
+        
+        <div class="store">
+            <h2>DIAGONAL - Vaujours, Général de Gaulle</h2>
+            <p>2 bis Av. du Général de Gaulle, 93410 Vaujours, France</p>
+        </div>
+
+        <div class="order">
+            <h3>Commande à récupérer</h3>
+            <p><strong>1x</strong> Panier Mixte</p>
+            <div class="code">C86RAVVCN6HK0</div>
+        </div>
+
+        <p style="font-size: 12px; color: gray; margin-top: 10px;">
+            Faites glisser pour confirmer la commande.
+        </p>
+
+        <div class="slider-container" id="slider">
+            <div class="slider-text" id="sliderText">Glisser pour valider</div>
+            <div class="slider-btn" id="sliderBtn"></div>
+        </div>
+    </div>
+
+    <script>
+        let slider = document.getElementById("slider");
+        let sliderBtn = document.getElementById("sliderBtn");
+        let sliderText = document.getElementById("sliderText");
+        let isSliding = false;
+        let startX, currentX;
+        let maxMove = slider.offsetWidth - sliderBtn.offsetWidth - 10;
+
+        sliderBtn.addEventListener("mousedown", (e) => {
+            isSliding = true;
+            startX = e.clientX;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isSliding) return;
+            currentX = e.clientX - startX;
+            if (currentX < 0) currentX = 0;
+            if (currentX > maxMove) currentX = maxMove;
+            sliderBtn.style.left = currentX + "px";
+            sliderText.style.opacity = 1 - currentX / maxMove;
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (!isSliding) return;
+            isSliding = false;
+            if (currentX >= maxMove) {
+                sliderText.innerText = "Commande validée !";
+                sliderText.style.opacity = 1;
+                sliderBtn.style.left = maxMove + "px";
+                slider.style.backgroundColor = "#00b894";
+            } else {
+                sliderBtn.style.left = "5px";
+                sliderText.style.opacity = 1;
+            }
+        });
+
+    </script>
+
+</body>
+</html>
